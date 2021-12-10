@@ -3,7 +3,7 @@
   "info": {
     "title": "fertilisation_advisor API",
     "description": "API specification for the fertilisation_advisor service template",
-    "version": "0.1.1"
+    "version": "0.2.0"
   },
   "servers": [
     {
@@ -47,18 +47,15 @@
                 "schema": {
                   "$ref": "#/components/schemas/Advice"
                 },
-                "example": [
-                  {
-                    "urn": "urn:com.agricircle.atlas.fertilization_advisor:1E371D44-59AE-4AF1-9570-9743DD3BA613",
-                    "field_urn": "urn:com.agricircle.atlas.field_data:FDBE6F55-6179-4B88-9177-4AFBED33ADAC",
-                    "nutrients": [
-                      "N",
-                      "P2O5",
-                      "K2O"
-                    ],
-                    "status": "PREPARING"
-                  }
-                ]
+                "example": {
+                  "urn": "urn:com.agricircle.atlas.fertilization_advisor:1E371D44-59AE-4AF1-9570-9743DD3BA613",
+                  "field_urn": "urn:com.agricircle.atlas.field_data:FDBE6F55-6179-4B88-9177-4AFBED33ADAC",
+                  "nutrients": [
+                    "P2O5",
+                    "K2O"
+                  ],
+                  "status": "PREPARING"
+                }
               }
             }
           },
@@ -115,7 +112,7 @@
             "schema": {
               "$ref": "#/components/schemas/AdviceURN"
             },
-            "example": "1E371D44-59AE-4AF1-9570-9743DD3BA613"
+            "example": "urn:com.agricircle.atlas.fertilisation_advisor:1E371D44-59AE-4AF1-9570-9743DD3BA613"
           }
         ],
         "responses": {
@@ -130,7 +127,6 @@
                   "urn": "urn:com.agricircle.atlas.fertilization_advisor:1E371D44-59AE-4AF1-9570-9743DD3BA613",
                   "field_urn": "urn:com.agricircle.atlas.field_data:FDBE6F55-6179-4B88-9177-4AFBED33ADAC",
                   "nutrients": [
-                    "N",
                     "P2O5",
                     "K2O"
                   ],
@@ -205,7 +201,7 @@
             "schema": {
               "$ref": "#/components/schemas/AdviceURN"
             },
-            "example": "1E371D44-59AE-4AF1-9570-9743DD3BA613"
+            "example": "urn:com.agricircle.atlas.fertilisation_advisor:1E371D44-59AE-4AF1-9570-9743DD3BA613"
           }
         ],
         "responses": {
@@ -260,7 +256,7 @@
         }
       }
     },
-    "/advices/{advice_urn}/applications": {
+    "/applications": {
       "post": {
         "security": [
           {
@@ -274,20 +270,20 @@
         "parameters": [
           {
             "description": "the URN of an advice (urn:<service_id>:<internal_id>)",
-            "name": "advice_urn",
-            "in": "path",
+            "name": "advice",
+            "in": "query",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/AdviceURN"
             },
-            "example": "1E371D44-59AE-4AF1-9570-9743DD3BA613"
+            "example": "urn:com.agricircle.atlas.fertilisation_advisor:1E371D44-59AE-4AF1-9570-9743DD3BA613"
           }
         ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ApplicationArray"
+                "$ref": "#/components/schemas/ApplicationsPlan"
               }
             }
           }
@@ -374,7 +370,7 @@
         }
       }
     },
-    "/advices/{advice_id}/applications/{application_ref}": {
+    "/applications/{application_ref}": {
       "get": {
         "security": [
           {
@@ -387,14 +383,14 @@
         "summary": "Get advice's application information for selected application reference (get_application_info)",
         "parameters": [
           {
-            "description": "the id of an advice",
-            "name": "advice_id",
-            "in": "path",
+            "description": "the URN of an advice (urn:<service_id>:<internal_id>)",
+            "name": "advice",
+            "in": "query",
             "required": true,
             "schema": {
               "type": "string"
             },
-            "example": "1E371D44-59AE-4AF1-9570-9743DD3BA613"
+            "example": "urn:com.agricircle.atlas.fertilisation_advisor:1E371D44-59AE-4AF1-9570-9743DD3BA613"
           },
           {
             "description": "an application reference configured in plan_applications",
@@ -514,25 +510,26 @@
         ]
       },
       "AdvicePreparationRequest": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Advice"
+        "type": "object",
+        "properties": {
+          "field_urn": {
+            "$ref": "#/components/schemas/FieldURN"
           },
-          {
-            "type": "object",
-            "properties": {
-              "notification_url": {
-                "type": "string",
-                "format": "uri"
-              }
+          "nutrients": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NutrientType"
             }
+          },
+          "notification_url": {
+            "type": "string",
+            "format": "uri"
           }
-        ],
+        },
         "example": [
           {
             "field_urn": "urn:com.agricircle.atlas.field_data:FDBE6F55-6179-4B88-9177-4AFBED33ADAC",
             "nutrients": [
-              "N",
               "P2O5",
               "K2O"
             ],
@@ -616,7 +613,7 @@
             }
           },
           "application_map": {
-            "download_url": "https://ac_fertilisation_advisor.agricircle.com/blobs/1E371D44-59AE-4AF1-9570-9743DD3BA613-slurry?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJJWZ7B6WCRGMKFGQ%2F20180210%2Feu-west-2%2Fs3%2Faws4_request&X-Amz-Date=20180210T171315Z&X-Amz-Expires=1800&X-Amz-Signature=12b74b0788aa036bc7c3d03b3f20c61f1f91cc9ad8873e3314255dc479a25351&X-Amz-SignedHeaders=host",
+            "download_url": "https://some_arbitrary_url",
             "url_expires_at": "2021-10-31T15:32:00Z"
           },
           "amount": {
@@ -624,62 +621,66 @@
           }
         }
       },
-      "ApplicationArray": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/ApplicationArray"
-        },
-        "example": [
-          {
-            "application_ref": "slurry",
-            "product": {
-              "name": "Cow slurry",
-              "unit": "l",
-              "nutrients": {
-                "N": 100,
-                "P2O5": 50,
-                "K2O": 30,
-                "MgO": 3
-              }
-            }
+      "ApplicationsPlan": {
+        "type": "object",
+        "properties": {
+          "target_requirements": {
+            "type": "number",
+            "format": "float",
+            "description": "Percentage of the season's requirements to reach (default=100%). This can be used for when doing multiple applications over a season instead of all-at-once"
           },
-          {
-            "application_ref": "nitrogen",
-            "product": {
-              "name": "N-rich product",
-              "unit": "kg",
-              "nutrients": {
-                "N": 200,
-                "P2O5": 3,
-                "K2O": 1
-              }
-            }
-          },
-          {
-            "application_ref": "phosphorus",
-            "product": {
-              "name": "P-rich product",
-              "unit": "kg",
-              "nutrients": {
-                "N": 1,
-                "P2O5": 350,
-                "K2O": 60
-              }
-            }
-          },
-          {
-            "application_ref": "potassium",
-            "product": {
-              "name": "K-rich product",
-              "unit": "kg",
-              "nutrients": {
-                "N": 7.2,
-                "P2O5": 35.5,
-                "K2O": 422
-              }
+          "applications": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Application"
             }
           }
-        ]
+        },
+        "required": [
+          "applications"
+        ],
+        "example": {
+          "applications": [
+            {
+              "application_ref": "slurry",
+              "product": {
+                "name": "Cow slurry",
+                "unit": "l",
+                "nutrients": {
+                  "N": 100,
+                  "P2O5": 50,
+                  "K2O": 30,
+                  "MgO": 3
+                }
+              }
+            },
+            {
+              "application_ref": "phosphorus",
+              "product": {
+                "name": "P-rich product",
+                "unit": "kg",
+                "nutrients": {
+                  "N": 1,
+                  "P2O5": 350,
+                  "K2O": 60
+                }
+              }
+            },
+            {
+              "application_ref": "potassium",
+              "product": {
+                "name": "K-rich product",
+                "unit": "kg",
+                "nutrients": {
+                  "N": 7.2,
+                  "P2O5": 35.5,
+                  "K2O": 422
+                }
+              }
+            }
+          ],
+          "target_requirements": 50
+        }
       },
       "NutrientType": {
         "type": "string",
