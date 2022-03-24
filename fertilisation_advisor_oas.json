@@ -3,7 +3,7 @@
   "info": {
     "title": "fertilisation_advisor API",
     "description": "API specification for the fertilisation_advisor service template",
-    "version": "0.2.0"
+    "version": "0.2.1"
   },
   "servers": [
     {
@@ -54,7 +54,8 @@
                     "P2O5",
                     "K2O"
                   ],
-                  "status": "PREPARING"
+                  "status": "PREPARING",
+                  "status_message": "..."
                 }
               }
             }
@@ -130,7 +131,8 @@
                     "P2O5",
                     "K2O"
                   ],
-                  "status": "PREPARING"
+                  "status": "PREPARING",
+                  "status_message": "..."
                 }
               }
             }
@@ -495,11 +497,17 @@
             "type": "string",
             "enum": [
               "PREPARING",
+              "CONFIGURATION_REQUIRED",
               "READY",
               "FAILED"
             ],
             "readOnly": true,
             "description": "status of the advice preparation"
+          },
+          "status_message": {
+            "type": "string",
+            "readOnly": true,
+            "description": "end-user-friendly message describing the status. In the special case where status is CONFIGURATION_REQUESTED, the message MUST be a browser URL to a configuration UI where further configuration can take place"
           }
         },
         "required": [
