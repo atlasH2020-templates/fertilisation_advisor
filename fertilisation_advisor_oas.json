@@ -49,6 +49,7 @@
                 },
                 "example": {
                   "urn": "urn:com.agricircle.atlas.fertilization_advisor:1E371D44-59AE-4AF1-9570-9743DD3BA613",
+                  "type": "fertilisation",
                   "field_urn": "urn:com.agricircle.atlas.field_data:FDBE6F55-6179-4B88-9177-4AFBED33ADAC",
                   "nutrients": [
                     "P2O5",
@@ -126,6 +127,7 @@
                 },
                 "example": {
                   "urn": "urn:com.agricircle.atlas.fertilization_advisor:1E371D44-59AE-4AF1-9570-9743DD3BA613",
+                  "type": "fertilisation",
                   "field_urn": "urn:com.agricircle.atlas.field_data:FDBE6F55-6179-4B88-9177-4AFBED33ADAC",
                   "nutrients": [
                     "P2O5",
@@ -483,6 +485,10 @@
           "urn": {
             "$ref": "#/components/schemas/AdviceURN",
             "readOnly": true
+          },
+          "type": {
+            "type": "string",
+            "pattern": "fertilisation"
           },
           "field_urn": {
             "$ref": "#/components/schemas/FieldURN"
