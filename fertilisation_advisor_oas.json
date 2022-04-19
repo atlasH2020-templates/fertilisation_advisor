@@ -3,7 +3,7 @@
   "info": {
     "title": "fertilisation_advisor API",
     "description": "API specification for the fertilisation_advisor service template",
-    "version": "0.2.1"
+    "version": "0.2.3"
   },
   "servers": [
     {
@@ -505,6 +505,7 @@
               "PREPARING",
               "CONFIGURATION_REQUIRED",
               "READY",
+              "PLANNED",
               "FAILED"
             ],
             "readOnly": true,
