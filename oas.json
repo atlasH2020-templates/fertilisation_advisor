@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "ATLAS fertilisation_advisor Service Template API",
-    "version": "0.2.5"
+    "version": "0.2.6"
   },
   "servers": [
     {
