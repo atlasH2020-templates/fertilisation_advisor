@@ -14,7 +14,7 @@ ATLAS Service Template Specification
 Name                                        fertilisation_advisor
 Version                                                     0.2.6
 Status                                                  PUBLISHED
-Author(s)                            M. Caballero (AgriCircle AG)</p>
+Author(s)                            M. Caballero (AgriCircle AG)
 </div>
 
 <h2>The "fertilisation_advisor" ATLAS Service Template</h2>
@@ -24,6 +24,7 @@ Abstract
 This document describes the specifications for fertilisation_advisor services whose purpose is to provide product application maps for selected nutrients. fertilisation_advisor services are agnostic of tractors or other equipment; they typically use agronomical algorithms to provide advice on fertilization which would then be typically carried out by the ATLAS Equipment Centre.
 </div>
 <h2>1 Introduction</h2>
+
 Fertilisation is essential for crop yield. The fertilisation requirements depend on the nutrient requirements for a particular crop type and the availability of these nutrients in the soil.
 
 fertilisation_advisor services determine product application maps to optimally satisfy specific nutrients requirements which can later be applied in one or more applications by the ATLAS Equipment Centre on a field.
@@ -64,7 +65,6 @@ Advice Endpoints
     Prepare Advice
     Get Advice
     Cancel Advice
-Application Endpoints
     Get Application Info
 </pre>
 Implementations of fertilisation_advisor may require more parameters that are not included in the API. Such implementations MAY provide end-user configuration and management tools in a proprietary user interface.
@@ -163,7 +163,7 @@ This function returns status information about an advice.
 |     Outputs | advice info                  |
 +-------------+------------------------------+
 </pre>
-In addition to the information submitted when preparing the advice, the advice info also contains a status about the advice preparation which is one of IN_PROGRESS, CONFIGURATION_REQUIRED, READY, FAILED.
+In addition to the information submitted when preparing the advice, the advice info also contains a status about the advice preparation which is one of IN_PROGRESS, CONFIGURATION_REQUIRED, READY, FAILED. In this context, the IN_PROGRESS status indicates that some background processing is still being carried out and that the advice is not yet. The CONFIGURATION_REQUIRED status indicates that the end-user is required to perform some manual configuration on the service’s proprietary UI in order to enable the completion of the requested advice.
 
 <h2>5.2.3 Cancel Advice</h2>
 <pre>
@@ -244,7 +244,7 @@ and a single row:
 </pre>
 Services SHALL validate that the "atlas.participant" field matches the information attached to the authentication context in which the file is uploaded.
 
-If the GeoPackage was generated and uploaded by an Atlas service, then "atlas.application" SHOULD be "<service name>-<service version>", otherwise it MAY contain "<application name>-<application version>". In either case, no validation will be performed.
+If the GeoPackage was generated and uploaded by an Atlas service, then "atlas.application" SHOULD be "&lt;service name&gt;-&lt;service version&gt;", otherwise it MAY contain "&lt;application name&gt;-&lt;application version&gt;". In either case, no validation will be performed.
 
 The "atlas.format_version" field MUST be the version of the fertilisation_advisor template that is targeted by the client uploading the file. GeoPackage files of a given type are guaranteed to be compatible (no breaking changes) for a same MAJOR version of "atlas.format_version".
 
