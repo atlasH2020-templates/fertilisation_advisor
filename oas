@@ -669,6 +669,11 @@
             }
           }
         },
+        "required": [
+          "field_urn",
+          "status",
+          "recommendations"
+        ],
         "example": {
           "field_urn": "urn:field_data:fdbe6f55-6179-4b88-9177-4afbed33adac",
           "nutrients": [
@@ -679,8 +684,8 @@
           "recommendations": [
             {
               "nutrient": "P2O5",
-              "treat_earliest": "2021-10-31T00:00:00Z",
-              "treat_latest": "2021-11-15T00:00:00Z"
+              "earliest": "2021-10-31T00:00:00Z",
+              "latest": "2021-11-15T00:00:00Z"
             }
           ]
         }
@@ -916,29 +921,29 @@
       "Recommendation": {
         "type": "object",
         "properties": {
-          "treat_earliest": {
-            "type": "string",
-            "format": "date-time",
-            "description": "earliest recommended date/time by which a crop protection treatment should be applied"
-          },
-          "treat_latest": {
-            "type": "string",
-            "format": "date-time",
-            "description": "latest recommended date/time by which a crop protection treatment should be applied"
-          },
           "nutrient": {
             "$ref": "#/components/schemas/Nutrient"
+          },
+          "earliest": {
+            "type": "string",
+            "format": "date-time",
+            "description": "earliest date/time by which an advice/task should be performed for the nutrient"
+          },
+          "latest": {
+            "type": "string",
+            "format": "date-time",
+            "description": "latest date/time by which an advice/task should be performed for the nutrient"
           }
-        },
-        "example": {
-          "nutrient": "P2O5",
-          "treat_earliest": "2021-10-31T00:00:00Z",
-          "treat_latest": "2021-11-15T00:00:00Z"
         },
         "required": [
           "nutrient",
-          "treat_latest"
+          "latest"
         ],
+        "example": {
+          "nutrient": "P2O5",
+          "earliest": "2021-10-31T00:00:00Z",
+          "latest": "2021-11-15T00:00:00Z"
+        },
         "description": "Info about a fertilisation operation that should be performed"
       },
       "SimpleError": {
