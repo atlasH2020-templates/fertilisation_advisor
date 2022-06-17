@@ -11,14 +11,14 @@
   ],
   "tags": [
     {
-      "name": "Registration"
+      "name": "Monitoring"
     },
     {
       "name": "Advice"
     }
   ],
   "paths": {
-    "/registration": {
+    "/monitoring": {
       "post": {
         "security": [
           {
@@ -26,14 +26,14 @@
           }
         ],
         "tags": [
-          "Registration"
+          "Monitoring"
         ],
-        "summary": "Register field (register_field)",
+        "summary": "Monitor field (monitor_field)",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RegistrationRequest"
+                "$ref": "#/components/schemas/MonitoringRequest"
               }
             }
           }
@@ -44,7 +44,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Registration"
+                  "$ref": "#/components/schemas/MonitoringInfo"
                 }
               }
             }
@@ -78,11 +78,26 @@
                 }
               }
             }
+          },
+          "501": {
+            "description": "Operation not supported by this service implementation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedError"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimpleError"
+                }
+              }
+            }
           }
         }
       }
     },
-    "/registration/{field_urn}": {
+    "/monitoring/{field_urn}": {
       "get": {
         "security": [
           {
@@ -90,12 +105,12 @@
           }
         ],
         "tags": [
-          "Registration"
+          "Monitoring"
         ],
-        "summary": "Retrieve field registration info (registration_info)",
+        "summary": "Retrieve field monitoring recommendations (monitoring_info)",
         "parameters": [
           {
-            "description": "the URN of a registered field (urn:<field_service_id>:<internal_id>)",
+            "description": "the URN of a monitored field (urn:<field_service_id>:<internal_id>)",
             "name": "field_urn",
             "in": "path",
             "required": true,
@@ -111,7 +126,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Registration"
+                  "$ref": "#/components/schemas/MonitoringInfo"
                 }
               }
             }
@@ -170,12 +185,12 @@
           }
         ],
         "tags": [
-          "Registration"
+          "Monitoring"
         ],
-        "summary": "Delete field registration (unregister_field)",
+        "summary": "Cancel field monitoring (unmonitor_field)",
         "parameters": [
           {
-            "description": "the URN of a registered field (urn:<field_service_id>:<internal_id>)",
+            "description": "the URN of a monitored field (urn:<field_service_id>:<internal_id>)",
             "name": "field_urn",
             "in": "path",
             "required": true,
@@ -591,7 +606,7 @@
         "pattern": "^urn:[a-z][a-z0-9_.\\-]*:[\\w-.]+",
         "description": "Uniform resource name of an advice with the syntax `urn:<service_id>:<internal_id>`. <service_id> must be the id of a valid and active ATLAS service"
       },
-      "RegistrationRequest": {
+      "MonitoringRequest": {
         "type": "object",
         "properties": {
           "field_urn": {
@@ -605,7 +620,8 @@
           },
           "notification_url": {
             "type": "string",
-            "format": "uri"
+            "format": "uri",
+            "description": "Invoked with POST with a 'Recommendation' body (see components) when applicable"
           }
         },
         "required": [
@@ -620,7 +636,7 @@
           ]
         }
       },
-      "Registration": {
+      "MonitoringInfo": {
         "type": "object",
         "properties": {
           "field_urn": {
@@ -631,10 +647,6 @@
             "items": {
               "$ref": "#/components/schemas/Nutrient"
             }
-          },
-          "notification_url": {
-            "type": "string",
-            "format": "uri"
           },
           "status": {
             "type": "string",
@@ -649,6 +661,12 @@
           "status_message": {
             "type": "string",
             "description": "end-user-friendly message describing the status. In the special case where status is CONFIGURATION_REQUESTED, the message MUST be a browser URL to a configuration UI where further configuration can take place"
+          },
+          "recommendations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Recommendation"
+            }
           }
         },
         "example": {
@@ -657,7 +675,14 @@
             "P2O5",
             "K2O"
           ],
-          "status": "IN_PROGRESS"
+          "status": "READY",
+          "recommendations": [
+            {
+              "nutrient": "P2O5",
+              "treat_earliest": "2021-10-31T00:00:00Z",
+              "treat_latest": "2021-11-15T00:00:00Z"
+            }
+          ]
         }
       },
       "AdviceRequest": {
@@ -670,8 +695,7 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Nutrient"
-            },
-            "description": "Must be a subset of the registered nutrients"
+            }
           },
           "applications": {
             "type": "array",
@@ -700,7 +724,7 @@
               "product": {
                 "name": "Cow slurry",
                 "unit": "l",
-                "composition": {
+                "nutrients": {
                   "N": 100,
                   "P2O5": 50,
                   "K2O": 30,
@@ -713,7 +737,7 @@
               "product": {
                 "name": "K-rich product",
                 "unit": "kg",
-                "composition": {
+                "nutrients": {
                   "N": 7.2,
                   "P2O5": 35.5,
                   "K2O": 422
@@ -766,7 +790,7 @@
               "product": {
                 "name": "Cow slurry",
                 "unit": "l",
-                "composition": {
+                "nutrients": {
                   "N": 100,
                   "P2O5": 50,
                   "K2O": 30,
@@ -779,7 +803,7 @@
               "product": {
                 "name": "K-rich product",
                 "unit": "kg",
-                "composition": {
+                "nutrients": {
                   "N": 7.2,
                   "P2O5": 35.5,
                   "K2O": 422
@@ -830,7 +854,7 @@
           "product": {
             "name": "Cow slurry",
             "unit": "l",
-            "composition": {
+            "nutrients": {
               "N": 100,
               "P2O5": 50,
               "K2O": 30,
@@ -859,7 +883,7 @@
               "l"
             ]
           },
-          "composition": {
+          "nutrients": {
             "type": "array",
             "items": {
               "type": "object",
@@ -888,6 +912,34 @@
           "MgO",
           "S"
         ]
+      },
+      "Recommendation": {
+        "type": "object",
+        "properties": {
+          "treat_earliest": {
+            "type": "string",
+            "format": "date-time",
+            "description": "earliest recommended date/time by which a crop protection treatment should be applied"
+          },
+          "treat_latest": {
+            "type": "string",
+            "format": "date-time",
+            "description": "latest recommended date/time by which a crop protection treatment should be applied"
+          },
+          "nutrient": {
+            "$ref": "#/components/schemas/Nutrient"
+          }
+        },
+        "example": {
+          "nutrient": "P2O5",
+          "treat_earliest": "2021-10-31T00:00:00Z",
+          "treat_latest": "2021-11-15T00:00:00Z"
+        },
+        "required": [
+          "nutrient",
+          "treat_latest"
+        ],
+        "description": "Info about a fertilisation operation that should be performed"
       },
       "SimpleError": {
         "type": "string",
