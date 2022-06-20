@@ -20,7 +20,7 @@ Author(s)                            M. Caballero (AgriCircle AG)
 <div style="margin-left: -22px;">
 Abstract
 
-This document describes the specifications for fertilisation_advisor services whose purpose is to provide product application maps for selected nutrients. fertilisation_advisor services are agnostic of tractors or other equipment; they typically use agronomical algorithms to provide advice on fertilization which would then be typically carried out by the ATLAS Equipment Centre.
+This document describes the specifications for fertilisation_advisor services whose purpose is to provide product application maps for selected nutrients. fertilisation_advisor services are agnostic of tractors or other equipment; they typically use agronomical algorithms to provide advice on fertilisation which would then be typically carried out by the ATLAS Equipment Centre.
 </div>
 <h2>1 Introduction</h2>
 
@@ -97,12 +97,11 @@ This endpoint registers a field to be monitored for one or more nutrient require
 |      Inputs | field urn, [nutrients],      |
 |             | notification url             |
 +-------------+------------------------------+
-|     Outputs |                              |
+|     Outputs | (see monitoring_info)        |
 +-------------+------------------------------+
-
+</pre>
 NOTE: a fertilisation_advisor service MAY not support field monitoring. In that case, the implementation MUST return an error code 501 (Not Supported).
 
-</pre>
 See Nutrient Monitoring for details on the monitoring notification process.
 
 <h2>5.1.2 Get monitoring recommendations</h2>
@@ -114,10 +113,12 @@ This endpoint returns the monitoring recommendations for a field, that is whethe
 +-------------+------------------------------+
 |      Inputs | field urn                    |
 +-------------+------------------------------+
-|     Outputs | [nutrients],                 |
-|             | [recommendations]            |
+|     Outputs | status, [recommendations]    |
 +-------------+------------------------------+
 </pre>
+The status may be one of IN_PROGRESS, CONFIGURATION_REQUIRED, READY, FAILED. In this context, the IN_PROGRESS status indicates that some background processing is still being carried out and that the service is not yet ready to perform active monitoring. The CONFIGURATION_REQUIRED status indicates that the end-user is required to perform some manual configuration on the service's proprietary UI. FAILED indicates that monitoring is not possible. 0 or more alerts may be present only when the status is READY.
+
+If the status is READY then there may be one or more recommendations, to perform fertilisation for a monitored nutrient operations on the field.
 
 <h2>5.1.3 Unmonitor field</h2>
 
@@ -133,7 +134,7 @@ This endpoint cancels monitoring for a field.
 </pre>
 <h2>5.2 Advice Endpoints</h2>
 
-These endpoints relate to the creation of fertilization advices. An advice may be requested to plan and optimize fertilization for a one or more related nutrients (e.g. NPK) to be applied on a field.
+These endpoints relate to the creation of fertilisation advices. An advice may be requested to plan and optimize fertilisation for a one or more related nutrients (e.g. NPK) to be applied on a field.
 
 <h2>5.2.1 Prepare Advice</h2>
 
@@ -250,7 +251,7 @@ If the GeoPackage was generated and uploaded by an Atlas service, then "atlas.ap
 
 The "atlas.format_version" field MUST be the version of the fertilisation_advisor template that is targeted by the client uploading the file. GeoPackage files of a given type are guaranteed to be compatible (no breaking changes) for a same MAJOR version of "atlas.format_version".
 
-A fertilization application GeoPackage MUST contain the following additional tables:
+A fertilisation application GeoPackage MUST contain the following additional tables:
 <pre>
 +=========================================================+
 |                TABLE gpkg_contents                      |
@@ -320,7 +321,7 @@ and a single row:
 +=====+=============+=====================================+
 | ROW | COLUMN      | VALUE                               |
 +-----+-------------+-------------------------------------+
-|     | type        | "fertilization"                     |
+|     | type        | "fertilisation"                     |
 |  1  +-------------+-------------------------------------+
 |     | date        | "yyyy-MM-ddTHH:mm:ssZ"              |
 |     +-------------+-------------------------------------+

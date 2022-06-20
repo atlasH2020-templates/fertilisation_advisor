@@ -175,6 +175,21 @@
                 }
               }
             }
+          },
+          "501": {
+            "description": "Operation not supported by this service implementation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedError"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimpleError"
+                }
+              }
+            }
           }
         }
       },
@@ -236,6 +251,21 @@
           },
           "429": {
             "description": "Too many requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedError"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimpleError"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "Operation not supported by this service implementation",
             "content": {
               "application/json": {
                 "schema": {
@@ -639,15 +669,6 @@
       "MonitoringInfo": {
         "type": "object",
         "properties": {
-          "field_urn": {
-            "$ref": "#/components/schemas/FieldURN"
-          },
-          "nutrients": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Nutrient"
-            }
-          },
           "status": {
             "type": "string",
             "enum": [
@@ -670,16 +691,10 @@
           }
         },
         "required": [
-          "field_urn",
           "status",
           "recommendations"
         ],
         "example": {
-          "field_urn": "urn:field_data:fdbe6f55-6179-4b88-9177-4afbed33adac",
-          "nutrients": [
-            "P2O5",
-            "K2O"
-          ],
           "status": "READY",
           "recommendations": [
             {
@@ -765,30 +780,38 @@
           "field_urn": {
             "$ref": "#/components/schemas/FieldURN"
           },
-          "nutrients": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Nutrient"
-            }
-          },
           "applications": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Application"
             }
           },
-          "target_requirements": {
-            "type": "number",
-            "description": "Percentage of the season's requirements to reach (default=100%). This can be used for when doing multiple applications over a season instead of all-at-once"
+          "status": {
+            "type": "string",
+            "enum": [
+              "IN_PROGRESS",
+              "CONFIGURATION_REQUIRED",
+              "READY",
+              "FAILED"
+            ],
+            "description": "status of the advice"
+          },
+          "status_message": {
+            "type": "string",
+            "description": "end-user-friendly message describing the status. In the special case where status is CONFIGURATION_REQUESTED, the message MUST be a browser URL to a configuration UI where further configuration can take place"
           }
         },
+        "required": [
+          "urn",
+          "type",
+          "field_urn",
+          "applications",
+          "status"
+        ],
         "example": {
-          "urn": "urn:com.agricircle.atlas.fertilization_advisor:1e371d44-59ae-4af1-9570-9743dd3ba613",
+          "urn": "urn:com.agricircle.atlas.fertilisation_advisor:1e371d44-59ae-4af1-9570-9743dd3ba613",
           "type": "fertilisation",
           "field_urn": "urn:field_data:fdbe6f55-6179-4b88-9177-4afbed33adac",
-          "nutrients": [
-            "K2O"
-          ],
           "applications": [
             {
               "application_ref": "slurry",
@@ -815,7 +838,8 @@
                 }
               }
             }
-          ]
+          ],
+          "status": "READY"
         }
       },
       "Application": {
@@ -824,6 +848,11 @@
           "application_ref": {
             "type": "string",
             "pattern": "^\\w+$"
+          },
+          "type": {
+            "readOnly": true,
+            "type": "string",
+            "pattern": "fertilisation"
           },
           "product": {
             "$ref": "#/components/schemas/Product"
@@ -842,16 +871,20 @@
                 "format": "date-time",
                 "description": "date/time at which download URL expires"
               }
-            }
+            },
+            "required": [
+              "download_url"
+            ]
           },
           "amount": {
+            "readOnly": true,
             "type": "number",
-            "format": "float",
-            "readOnly": true
+            "format": "float"
           }
         },
         "required": [
           "application_ref",
+          "type",
           "product"
         ],
         "example": {
@@ -901,10 +934,18 @@
                   "format": "float",
                   "description": "Grams of nutrient per product unit"
                 }
-              }
+              },
+              "required": [
+                "nutrient",
+                "amount"
+              ]
             }
           }
-        }
+        },
+        "required": [
+          "unit",
+          "nutrients"
+        ]
       },
       "Nutrient": {
         "type": "string",
