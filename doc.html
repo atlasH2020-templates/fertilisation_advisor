@@ -385,11 +385,11 @@ The purpose of the diagrams in this section is to illustrate communication patte
 
 The dynamic behaviour is similar for most advisor-type service templates (see The Advisor Lifecycle).
 
-<h2>9.2 Advice Preparation</h2>
+<h2>9.1 Advice Preparation</h2>
 
 There are two methods for determining whether an advice preparation has completed (successfully or unsuccessfully): by polling the advice_info endpoint or by notification.
 
-<h2>9.2.1 Polling</h2>
+<h2>9.1.1 Polling</h2>
 
 After requesting an advice preparation, the client polls the advice_info endpoint at regular intervals until the returned status is READY or FAILED.
 
@@ -397,7 +397,7 @@ The status may be CONFIGURATION_REQUIRED which indicates that a user action is r
 
 <img src="doc/advice_polling.png" style="width: 420px" />
 
-<h2>9.2.2 Notification</h2>
+<h2>9.1.2 Notification</h2>
 
 If a notification URL was supplied on the prepare_advice endpoint, it will be invoked by the advisor when the preparation status changes.
 
@@ -405,17 +405,17 @@ If a notification URL was supplied on the prepare_advice endpoint, it will be in
 
 Advisors MUST invoke the notification URL supplied by the client with an HTTPS POST command. The payload will be identical to the one that would be returned by the advice_info request.
 
-<h2>9.3 Field Monitoring</h2>
+<h2>9.2 Field Monitoring</h2>
 
 Advanced advisors have the ability to monitor conditions on fields in the background and proactively generate fertilisation recommendations. There are two methods for determining whether recommendations are available: by polling the monitoring_info endpoint or by notification.
 
-<h2>9.3.1 Polling</h2>
+<h2>9.2.1 Polling</h2>
 
 After requesting a field to be monitored, the client polls monitoring_info endpoint at regular intervals to check whether any 'recommendations' are available.
 
 <img src="doc/monitoring_polling.png" style="width: 420px" />
 
-<h2>9.3.2 Notification</h2>
+<h2>9.2.2 Notification</h2>
 
 If a notification URL was supplied on the monitor_field endpoint, it will be invoked by the advisor when a new recommendation becomes available.
 
@@ -423,7 +423,7 @@ If a notification URL was supplied on the monitor_field endpoint, it will be inv
 
 Advisors MUST invoke the notification URL supplied by the client with an HTTPS POST command. The payload will be an array of recommendations (as defined in the OpenAPI 'Recommendation' specifications).
 
-<h2>9.4 General Comments on Notifications</h2>
+<h2>9.3 General Comments on Notifications</h2>
 
 Services must provide best efforts to deliver notifications. A notification is considered successful if the target returns an http result code 2XX.
 
