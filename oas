@@ -673,7 +673,6 @@
                 },
                 "example": {
                   "application_ref": "slurry",
-                  "type": "fertilisation",
                   "product": {
                     "name": "Cow slurry",
                     "unit": "l",
@@ -906,18 +905,12 @@
             "type": "string",
             "pattern": "^\\w+$"
           },
-          "type": {
-            "readOnly": true,
-            "type": "string",
-            "pattern": "fertilisation"
-          },
           "product": {
             "$ref": "#/components/schemas/Product"
           }
         },
         "required": [
           "application_ref",
-          "type",
           "product"
         ]
       },
@@ -927,10 +920,6 @@
           "application_ref": {
             "type": "string",
             "pattern": "^\\w+$"
-          },
-          "type": {
-            "type": "string",
-            "pattern": "fertilisation"
           },
           "product": {
             "$ref": "#/components/schemas/Product"
@@ -961,7 +950,6 @@
         },
         "required": [
           "application_ref",
-          "type",
           "product",
           "application_map"
         ]
