@@ -841,9 +841,14 @@
               "$ref": "#/components/schemas/Application"
             }
           },
-          "target_requirements": {
+          "ratio": {
             "type": "number",
-            "description": "Percentage of the season's requirements to reach (default=100%). This can be used for when doing multiple applications over a season instead of all-at-once"
+            "description": "Percentage of the season's requirements to reach (default=100). This can be used for when doing multiple applications over a season instead of all-at-once"
+          },
+          "notification_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "Invoked with POST with an 'Advice' body (see components) when applicable"
           }
         },
         "required": [
