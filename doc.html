@@ -343,20 +343,20 @@ and a single row:
 +=====+=============+=====================================+
 | ROW | COLUMN      | VALUE                               |
 +-----+-------------+-------------------------------------+
-|     | type        | "fertilisation"                     |
+|     | type        | "fertilization"                     |
 |  1  +-------------+-------------------------------------+
 |     | date        | "yyyy-MM-ddTHH:mm:ssZ"              |
 |     +-------------+-------------------------------------+
 |     | info        | "&lt;application_info_json&gt;"           |
 +-----+-------------+-------------------------------------+
 </pre>
-Fertilization "application_info.info" is a JSON object serialized as a string, such as:
+Fertilisation "application_info.info" is a JSON object serialized as a string, such as:
 <pre>
 +-----------------------------------------------+
 | {                                             |
 |   "product": {                                |
 |      "name": "optional name",                 |
-|      "unit": "kg|l",                          |
+|      "unit": "&lt;kg|l&gt;",                        |
 |      "amount": &lt;amount_in_product_unit&gt;,      |
 |      "nutrients": {                           |
 |         "N": &lt;amount_in_grams_per_unit&gt;,      |
