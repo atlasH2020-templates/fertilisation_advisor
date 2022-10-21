@@ -1,5 +1,5 @@
-# fertilisation_advisor service template \[v0.2.7\]
+# ATLAS fertilisation_advisor Service Template \[v0.2.8\]
 
-[Documentation](https://htmlpreview.github.io/?https://github.com/atlasH2020-templates/fertilisation_advisor/blob/v0.2.7/doc.html)
+[Documentation](https://htmlpreview.github.io/?https://github.com/atlasH2020-templates/fertilisation_advisor/blob/v0.2.8/doc.html)
 
-[OpenAPI Specifications](https://sensorsystems.iais.fraunhofer.de/doc/?url=https://raw.githubusercontent.com/atlasH2020-templates/fertilisation_advisor/v0.2.7/oas)  
+[OpenAPI Specifications](https://sensorsystems.iais.fraunhofer.de/doc/?url=https://raw.githubusercontent.com/atlasH2020-templates/fertilisation_advisor/v0.2.8/oas)  
