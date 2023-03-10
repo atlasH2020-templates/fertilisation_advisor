@@ -794,7 +794,7 @@
           },
           "ratio": {
             "type": "number",
-            "description": "Percentage of the target requirements to reach (default=100). This can be used for when doing multiple applications over a season instead of all-at-once. If ratio is specified for one application, it MUST be specified for all. If specified, ratios MUST sum to 100."
+            "description": "Percentage of the target requirements to reach (default=100). This can be used for when doing multiple applications over a season instead of all-at-once. If ratio is specified for one application, it MUST be specified for all. If specified, ratios sum MUST NOT exceed 100."
           }
         },
         "required": [
