@@ -15,6 +15,9 @@
   ],
   "tags": [
     {
+      "name": "Capabilities"
+    },
+    {
       "name": "Monitoring"
     },
     {
@@ -22,6 +25,93 @@
     }
   ],
   "paths": {
+    "/capabilities": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": [
+          "Capabilities"
+        ],
+        "summary": "Capabilities for field (capabilities_for_field)",
+        "parameters": [
+          {
+            "description": "the URN of a fiel",
+            "name": "field_urn",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/FieldURN"
+            },
+            "example": "urn:com.agricircle.atlas.field_data:fdbe6f55-6179-4b88-9177-4afbed33adac"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "nutrients": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Nutrient"
+                      }
+                    },
+                    "can-NPK": {
+                      "type": "boolean",
+                      "description": "If true, NPK optimization is supported on this field."
+                    }
+                  }
+                },
+                "example": {
+                  "nutrients": [
+                    "N",
+                    "P",
+                    "K"
+                  ],
+                  "can-NPK": true
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid or missing credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedError"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "Operation not supported by this service implementation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/monitoring": {
       "post": {
         "security": [
@@ -34,6 +124,7 @@
         ],
         "summary": "Monitor field (monitor_field)",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -243,6 +334,7 @@
         ],
         "summary": "Prepare an advice (prepare_advice)",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -794,7 +886,7 @@
           },
           "ratio": {
             "type": "number",
-            "description": "Percentage of the target requirements to reach (default=100). This can be used for when doing multiple applications over a season instead of all-at-once. If ratio is specified for one application, it MUST be specified for all. If specified, ratios sum MUST NOT exceed 100."
+            "description": "Percentage of the target requirements to reach (default=100). This can be used for when doing multiple applications over a season instead of all-at-once. If ratio is specified for one application, it MUST be specified for all."
           }
         },
         "required": [
