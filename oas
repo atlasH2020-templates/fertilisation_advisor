@@ -2,11 +2,11 @@
   "openapi": "3.0.1",
   "info": {
     "title": "ATLAS fertilisation_advisor Service Template API",
-    "version": "0.2.8"
+    "version": "0.3.0"
   },
   "externalDocs": {
     "description": "Service Template Document",
-    "url": "https://htmlpreview.github.io/?https://github.com/atlasH2020-templates/fertilisation_advisor/blob/v0.2.8/doc.html"
+    "url": "https://htmlpreview.github.io/?https://github.com/atlasH2020-templates/fertilisation_advisor/blob/v0.3.0/doc.html"
   },
   "servers": [
     {
@@ -251,6 +251,8 @@
               "example": {
                 "field_urn": "urn:com.agricircle.atlas.field_data:fdbe6f55-6179-4b88-9177-4afbed33adac",
                 "nutrients": [
+                  "N",
+                  "P2O5",
                   "K2O"
                 ],
                 "applications": [
@@ -725,10 +727,6 @@
               "$ref": "#/components/schemas/Application"
             }
           },
-          "ratio": {
-            "type": "number",
-            "description": "Percentage of the season's requirements to reach (default=100). This can be used for when doing multiple applications over a season instead of all-at-once"
-          },
           "notification_url": {
             "type": "string",
             "format": "uri",
@@ -793,6 +791,10 @@
           },
           "product": {
             "$ref": "#/components/schemas/Product"
+          },
+          "ratio": {
+            "type": "number",
+            "description": "Percentage of the target requirements to reach (default=100). This can be used for when doing multiple applications over a season instead of all-at-once. If ratio is specified for one application, it MUST be specified for all. If specified, ratios MUST sum to 100."
           }
         },
         "required": [
