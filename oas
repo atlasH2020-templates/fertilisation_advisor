@@ -129,6 +129,13 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/MonitoringRequest"
+              },
+              "example": {
+                "field_urn": "urn:com.agricircle.atlas.field_data:fdbe6f55-6179-4b88-9177-4afbed33adac",
+                "nutrients": [
+                  "P2O5",
+                  "K2O"
+                ]
               }
             }
           }
@@ -140,6 +147,16 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/MonitoringInfo"
+                },
+                "example": {
+                  "status": "READY",
+                  "recommendations": [
+                    {
+                      "nutrient": "P2O5",
+                      "earliest": "2021-10-31T00:00:00Z",
+                      "latest": "2021-11-15T00:00:00Z"
+                    }
+                  ]
                 }
               }
             }
@@ -207,6 +224,16 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/MonitoringInfo"
+                },
+                "example": {
+                  "status": "READY",
+                  "recommendations": [
+                    {
+                      "nutrient": "P2O5",
+                      "earliest": "2021-10-31T00:00:00Z",
+                      "latest": "2021-11-15T00:00:00Z"
+                    }
+                  ]
                 }
               }
             }
@@ -752,14 +779,7 @@
         "required": [
           "field_urn",
           "nutrients"
-        ],
-        "example": {
-          "field_urn": "urn:com.agricircle.atlas.field_data:fdbe6f55-6179-4b88-9177-4afbed33adac",
-          "nutrients": [
-            "P2O5",
-            "K2O"
-          ]
-        }
+        ]
       },
       "MonitoringInfo": {
         "type": "object",
@@ -789,17 +809,7 @@
         "required": [
           "status",
           "recommendations"
-        ],
-        "example": {
-          "status": "READY",
-          "recommendations": [
-            {
-              "nutrient": "P2O5",
-              "earliest": "2021-10-31T00:00:00Z",
-              "latest": "2021-11-15T00:00:00Z"
-            }
-          ]
-        }
+        ]
       },
       "AdviceRequest": {
         "type": "object",
@@ -818,6 +828,10 @@
             "items": {
               "$ref": "#/components/schemas/Application"
             }
+          },
+          "ratio": {
+            "type": "number",
+            "description": "Percentage of the season's requirements to reach (default=100). This can be used for when doing multiple applications over a period of time, within a crop cycle, instead of all-at-once"
           },
           "notification_url": {
             "type": "string",
@@ -883,10 +897,6 @@
           },
           "product": {
             "$ref": "#/components/schemas/Product"
-          },
-          "ratio": {
-            "type": "number",
-            "description": "Percentage of the target requirements to reach (default=100). This can be used for when doing multiple applications over a season instead of all-at-once. If ratio is specified for one application, it MUST be specified for all."
           }
         },
         "required": [
@@ -1006,11 +1016,6 @@
           "nutrient",
           "latest"
         ],
-        "example": {
-          "nutrient": "P2O5",
-          "earliest": "2021-10-31T00:00:00Z",
-          "latest": "2021-11-15T00:00:00Z"
-        },
         "description": "Info about a fertilisation operation that should be performed"
       },
       "DetailedError": {
