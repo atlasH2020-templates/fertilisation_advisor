@@ -2,11 +2,11 @@
   "openapi": "3.0.1",
   "info": {
     "title": "ATLAS fertilisation_advisor Service Template API",
-    "version": "0.2.9"
+    "version": "0.2.10"
   },
   "externalDocs": {
     "description": "Service Template Document",
-    "url": "https://htmlpreview.github.io/?https://github.com/atlasH2020-templates/fertilisation_advisor/blob/v0.3.0/doc.html"
+    "url": "https://htmlpreview.github.io/?https://github.com/atlasH2020-templates/fertilisation_advisor/blob/v0.2.10/doc.html"
   },
   "servers": [
     {
@@ -976,6 +976,10 @@
                 "amount"
               ]
             }
+          },
+          "max_amount": {
+            "type": "number",
+            "description": "Maximum amount of product (in product units) to be applied in this operation. By default, there is no upper limit."
           }
         },
         "required": [
