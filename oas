@@ -977,7 +977,7 @@
               ]
             }
           },
-          "max_amount": {
+          "max_product_amount": {
             "type": "number",
             "description": "Maximum amount of product (in product units) to be applied in this operation. By default, there is no upper limit."
           }
